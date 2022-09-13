@@ -67,7 +67,7 @@ curl -u test:password123 -H "label:load_data_order_info" -H "column_separator:,"
 `column_separator` 字段的分隔符
 `label`   导入标识, 相同标识的数据不能重复导入多次，用于避免重复导入数据
 
-更多参数可参考官网，https://doris.apache.org/docs/dev/sql-manual/sql-reference/Data-Manipulation-Statements/Load/STREAM-LOAD/
+更多参数可参考官网[STREAM-LOAD](https://doris.apache.org/docs/dev/sql-manual/sql-reference/Data-Manipulation-Statements/Load/STREAM-LOAD/)
 
 
 执行返回json：
