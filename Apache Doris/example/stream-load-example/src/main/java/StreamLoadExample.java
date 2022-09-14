@@ -15,8 +15,8 @@ import java.nio.charset.StandardCharsets;
 
 
 public class StreamLoadExample {
-    private final static String HOST = "192.168.56.104";
-    private final static int PORT = 8040;
+    private final static String HOST = "192.168.56.104"; // FE IP
+    private final static int PORT = 8030; // FE HTTP 端口
     private final static String DATABASE = "test"; // 数据库名
     private final static String TABLE = "order_info_example"; // 数据表名
     private final static String USER = "test"; // Doris 用户名
