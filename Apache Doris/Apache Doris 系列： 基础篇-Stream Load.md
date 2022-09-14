@@ -11,11 +11,11 @@ Stream Load 的API地址
 ----
 
 ```
-http://be_host:http_port/api/{db}/{table}/_stream_load 
+http://fe_host:http_port/api/{db}/{table}/_stream_load 
 
 ```
- `be_host`      BE节点的IP地址
- `http_port`  BE节点的webserver_port， 默认为8040
+ `fe_host`      FE节点的IP地址
+ `http_port`  FE节点的webserver_port， 默认为8030
  `db`                数据库名
  `table`          数据表名
 
@@ -58,8 +58,9 @@ PROPERTIES (
 3) 提交 Stream Load 任务
 
 ```
-curl -u test:password123 -H "label:load_data_order_info" -H "column_separator:," -T /home/ubuntu/apache-doris/test_data.txt http://192.168.56.104:8040/api/test/order_info/_stream_load
+curl --location-trusted -u test:password123 -H "label:load_data_order_info" -H "column_separator:," -T /home/ubuntu/apache-doris/test_data.txt http://192.168.56.104:8030/api/test/order_info/_stream_load
 ```
+
 
 参数说明：
 `-u` 用户名:密码
@@ -72,7 +73,7 @@ curl -u test:password123 -H "label:load_data_order_info" -H "column_separator:,"
 
 执行返回json：
 ```
-ubuntu@ubuntu:~/apache-doris$ curl -u test:password123 -H "label:load_data_order_info" -H "column_separator:," -T /home/ubuntu/apache-doris/test_data.txt http://192.168.56.104:8040/api/test/order_info/_stream_load
+ubuntu@ubuntu:~/apache-doris$ curl --location-trusted -u test:password123 -H "label:load_data_order_info" -H "column_separator:," -T /home/ubuntu/apache-doris/test_data.txt http://192.168.56.104:8030/api/test/order_info/_stream_load
 {
     "TxnId": 20,
     "Label": "load_data_order_info",
@@ -138,6 +139,6 @@ mysql>
     "ReadDataTimeMs": 0,
     "WriteDataTimeMs": 22,
     "CommitAndPublishTimeMs": 0,
-    "ErrorURL": "http://192.168.56.104:8040/api/_load_error_log?file=__shard_12/error_log_insert_stmt_fc406c9ec2ab000e-9b2ae69ce54e9c8a_fc406c9ec2ab000e_9b2ae69ce54e9c8a"
+    "ErrorURL": "http://192.168.56.104:8030/api/_load_error_log?file=__shard_12/error_log_insert_stmt_fc406c9ec2ab000e-9b2ae69ce54e9c8a_fc406c9ec2ab000e_9b2ae69ce54e9c8a"
 }
 ```
