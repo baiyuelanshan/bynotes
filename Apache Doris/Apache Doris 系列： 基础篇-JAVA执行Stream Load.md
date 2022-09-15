@@ -77,4 +77,4 @@ public class StreamLoadExample {
 
 ```
 
-[github代码地址](https://github.com/baiyuelanshan/bynotes/tree/master/Apache%20Doris/example/stream-load-example)
+[github代码地址](https://github.com/baiyuelanshan/apache-doris-example/blob/main/src/main/java/StreamLoadExample.java)
