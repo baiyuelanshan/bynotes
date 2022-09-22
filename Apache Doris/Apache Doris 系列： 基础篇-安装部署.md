@@ -135,8 +135,10 @@ alive ：该值为 true 说明该节点运行正常
 ```shell 
 cd apache-doris/be
 ```
-在配置文件 conf/be.conf 添加priority_networks 参数
-priority_networks = 192.168.56.104/24
+在配置文件 conf/be.conf 添加以下参数：
+
+>priority_networks = 192.168.56.104/24
+   enable_stream_load_record = true
 
 2) 启动be
 ```shell 
