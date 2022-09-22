@@ -95,31 +95,32 @@ GROUPING SETS(
 
 使用案例
 --
-有一组薪酬明细数据，维度有部门，职级，需要计算一下结果：
-- 全公司薪酬的Min,Max,Avg
-- 部门薪酬的Min,Max,Avg
-- 职级薪酬的Min,Max,Avg
-- 部门内职级薪酬的Min,Max,Avg
+有一组某年级考试分数的明细数据，维度有班级，课程，需要计算以下结果：
+- 全年级考试分数的Min,Max,Avg
+- 以班级分组考试分数的Min,Max,Avg
+- 以课程分组考试分数的Min,Max,Avg
+- 以班级和课程分组考试分数的Min,Max,Avg
 
 
 1）准备数据
 ```txt
-技术部,P6,20000
-技术部,P6,15000
-技术部,P7,30000
-技术部,P7,35000
-财务部,P6,21000
-财务部,P6,16000
-财务部,P7,31000
-财务部,P7,36000
+李明,一班,语文,80
+韩梅梅,一班,语文,90
+李明,一班,数学,90
+韩梅梅,一班,数学,90
+露西,二班,语文,90
+莉莉,二班,语文,100
+露西,二班,数学,100
+莉莉,二班,数学,90
 ```
 
 
 ```
-CREATE TABLE salary (
-    department string,
-    level string,
-    salary int
+CREATE TABLE score_detail (
+    name string,
+    class string,
+    course string,
+    score int
 ) 
 ...
 ```
@@ -128,20 +129,20 @@ CREATE TABLE salary (
 
 ```sql
 SELECT 
-coalesce(department,'全部') as department,
-coalesce(level,'全部') as level,
-Min(salary) as min_salary,
-Max(salary) as max_salary,
-Avg(salary) as avg_salary
+coalesce(class,'全部') as class,
+coalesce(course,'全部') as course,
+Min(score) as min_score,
+Max(score) as max_score,
+Avg(score) as avg_score
 from
-yishou_daily_test.salary
+score_detail
 GROUP BY 
-department,
-level
+class,
+course
 GROUPING SETS(
-        (department),
-        (level),
-        (department,level),
+        (class),
+        (course),
+        (class,course),
         ()
     )
 
@@ -149,14 +150,14 @@ GROUPING SETS(
 
 执行结果：
 
-|department |level|min_salary|max_salary|avg_salary|
-|-----------|-----|----------|----------|----------|
-|财务部	|P6	|16000	|21000	|18500|
-|财务部	|P7	|31000	|36000	|33500|
-|财务部	|全部	|16000	|36000	|26000|
-|技术部	|P7	|30000	|35000	|32500|
-|技术部	|全部	|15000	|35000	|25000|
-|技术部	|P6	|15000	|20000	|17500|
-|全部	|全部	|15000	|36000	|25500|
-|全部	|P6	|15000	|21000	|18000|
-|全部	|P7	|30000	|36000	|33000|
+|class|	course|	min_score|	max_score|	avg_score|
+|-----|-------|----------|-----------|-----------|
+|一班|	全部	|   80|	90	|87.5|
+|一班|	语文|	80|	90	|85|
+|一班|	数学|	90|	90	|90|
+|全部|	全部|	80|	100	|91.25|
+|全部|	数学|	90|	100	|92.5|
+|全部|	语文|	80|	100	|90|
+|二班|	数学|	90|	100	|95|
+|二班|	全部|	90|	100	|95|
+|二班|	语文|	90|	100	|95|
