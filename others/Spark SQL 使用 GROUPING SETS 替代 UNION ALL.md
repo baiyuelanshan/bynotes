@@ -96,10 +96,10 @@ GROUPING SETS(
 使用案例
 --
 有一组某年级考试分数的明细数据，维度有班级，课程，需要计算以下结果：
-- 全年级考试分数的Min,Max,Avg
-- 以班级分组考试分数的Min,Max,Avg
-- 以课程分组考试分数的Min,Max,Avg
-- 以班级和课程分组考试分数的Min,Max,Avg
+- 计算全年级考试分数的Min,Max,Avg
+- 以班级分组，计算考试分数的Min,Max,Avg
+- 以课程分组，计算考试分数的Min,Max,Avg
+- 以班级和课程分组，计算考试分数的Min,Max,Avg
 
 
 1）准备数据
