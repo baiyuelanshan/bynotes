@@ -133,3 +133,10 @@ mysql> select * from  test.order_info_example limit 10;
 10 rows in set (0.05 sec)
 
 ```
+
+
+完整代码
+---
+
+[src/main/java/FlinkSQLSinkExample.java](https://github.com/baiyuelanshan/apache-doris-example/blob/main/src/main/java/FlinkSQLSinkExample.java)
+
