@@ -95,11 +95,11 @@ GROUPING SETS(
 
 使用案例
 --
-有一组某年级考试分数的明细数据，维度有班级，课程，需要计算以下结果：
-- 计算全年级考试分数的Min,Max,Avg
-- 以班级分组，计算考试分数的Min,Max,Avg
-- 以课程分组，计算考试分数的Min,Max,Avg
-- 以班级和课程分组，计算考试分数的Min,Max,Avg
+有一组薪酬明细数据，维度有部门，职级，需要计算一下结果：
+- 全公司薪酬的Min,Max,Avg
+- 部门薪酬的Min,Max,Avg
+- 职级薪酬的Min,Max,Avg
+- 部门内职级薪酬的Min,Max,Avg
 
 
 1）准备数据
@@ -116,7 +116,7 @@ GROUPING SETS(
 
 
 ```
-CREATE TABLE score_detail (
+CREATE TABLE yishou_daily_test.score_detail (
     name string,
     class string,
     course string,
@@ -135,7 +135,7 @@ Min(score) as min_score,
 Max(score) as max_score,
 Avg(score) as avg_score
 from
-score_detail
+yishou_daily_test.score_detail
 GROUP BY 
 class,
 course
@@ -149,6 +149,20 @@ GROUPING SETS(
 ```
 
 执行结果：
+
+|department |level|min_salary|max_salary|avg_salary|
+|-----------|-----|----------|----------|----------|
+|财务部	|P6	|16000	|21000	|18500|
+|财务部	|P7	|31000	|36000	|33500|
+|财务部	|全部	|16000	|36000	|26000|
+|技术部	|P7	|30000	|35000	|32500|
+|技术部	|全部	|15000	|35000	|25000|
+|技术部	|P6	|15000	|20000	|17500|
+|全部	|全部	|15000	|36000	|25500|
+|全部	|P6	|15000	|21000	|18000|
+|全部	|P7	|30000	|36000	|33000|
+
+
 
 |class|	course|	min_score|	max_score|	avg_score|
 |-----|-------|----------|-----------|-----------|
