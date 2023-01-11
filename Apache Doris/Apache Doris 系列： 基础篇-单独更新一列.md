@@ -56,3 +56,4 @@ mysql> select * from test.expamle_tbl2
 
 ```
 
+注意：`user_id`, `date`, `city`, `age`, `sex` 这几个字段是聚合键，必须要指定
