@@ -38,5 +38,20 @@ flink-examples下还有三个子项目：
 
 ![[Pasted image 20230130144749.png]]
 
+## 4. 注意事项
+
+有部分JAR包下载失败，原因是从github拉取下来的Flink版本是1.16-SNAPSHOT，而maven库的版本号却是1.16.0， 因此，建议把flink-examples项目中的所有pom.xml中的Flink版本号统一修改为1.16.0
+
+```xml
+<parent>  
+   <artifactId>flink-examples-build-helper</artifactId>  
+   <groupId>org.apache.flink</groupId>  
+   <!--<version>1.16-SNAPSHOT</version>-->  
+   <version>1.16.0</version>  
+</parent>
+```
+
+
+## 5. 结语
 
 本篇到此结束，欢迎订阅Flink专栏，学习更多Flink的相关知识。
