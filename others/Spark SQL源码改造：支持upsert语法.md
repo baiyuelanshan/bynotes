@@ -1,9 +1,9 @@
-## 问题描述
+## 1. 问题描述
 
 ```scala
 //以覆盖的模式写入到Apache Phoenix
     dataFrame.write.format("jdbc")
-      .mode(SaveMode.Overwrite)
+      .mode("overwrite")
       .option("dbtable",phoenix_dbtable)
       .option("url",phoenix_jdbc_url)
       .option("user",phoenix_user)
@@ -13,7 +13,9 @@
 
 Apache Phoenix 无论插入还是更新数据的语法都是Upsert table values(....)，Spark SQL jdbc 的save方法支持的是INSERT语法，因此当使用该方法写数据到Phoenix时会遇到语法不兼容的错误。
 
-## 解决
+`spark 1.6.0`
+
+## 2. 解决
 
 主要设计三个类:
 * SaveMode
@@ -22,7 +24,7 @@ Apache Phoenix 无论插入还是更新数据的语法都是Upsert table values(
 
 DataFrameWrite.jdbc -> JdbcUtils.saveTable -> JdbcUtils.savePartition -> JdbcUtils.insertStatement
 
-#### 1. 增加Upsert模式
+#### 2.1 增加Upsert模式
 
 `SaveMode`是一个枚举类，在这个类中增加`Upsert`
 ```java
@@ -40,7 +42,7 @@ package org.apache.spark.sql;
 }
 ```
 
-#### 2. JdbcUtils增加对Upsert模式的支持
+#### 2.2 JdbcUtils增加对Upsert模式的支持
 JdbcUtils类增加saveMode全局变量
 `var saveMode`
 
@@ -106,7 +108,27 @@ JdbcUtils类增加saveMode全局变量
 }
 ```
 
-#### 3.  DataFrameWrite增加Upsert支持
+#### 2.3  DataFrameWrite增加Upsert支持
+
+找到DataFrameWrite的mode
+
+```scala
+def mode(saveMode: String): DataFrameWriter = {  
+  this.mode = saveMode.toLowerCase match {  
+    case "overwrite" => SaveMode.Overwrite  
+    case "append" => SaveMode.Append  
+    case "ignore" => SaveMode.Ignore  
+    case "upsert" => SaveMode.Upsert  
+    case "error" | "default" => SaveMode.ErrorIfExists  
+    case _ => throw new IllegalArgumentException(s"Unknown save mode: $saveMode. " +  
+      "Accepted modes are 'overwrite', 'append', 'ignore','upsert', 'error'.")  
+  }  
+  this  
+}
+```
+
+
+
 找到DataFrameWrite的jdbc(url: String, table: String, connectionProperties: Properties)
 
 JdbcUtils.saveTable(df, url, table, props) 改为 JdbcUtils.saveTable(df, url, table, mode, props)
@@ -150,4 +172,18 @@ def jdbc(url: String, table: String, connectionProperties: Properties): Unit = {
   JdbcUtils.saveTable(df, url, table, mode, props)  
 }
 
+```
+
+
+## 4. 以Upsert模式写入Phoenix
+
+```scala
+//以覆盖的模式写入到Apache Phoenix
+    dataFrame.write.format("jdbc")
+      .mode("overwrite")
+      .option("dbtable",phoenix_dbtable)
+      .option("url",phoenix_jdbc_url)
+      .option("user",phoenix_user)
+      .option("password",phoex_password)
+      .save()
 ```
